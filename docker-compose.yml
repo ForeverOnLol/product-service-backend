@@ -9,7 +9,7 @@ services:
       - POSTGRES_HOSTNAME=psql_db
     ports:
       - 5432:5432
-  web:
+  knife_market_products:
     build: .
     command: bash -c "pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
