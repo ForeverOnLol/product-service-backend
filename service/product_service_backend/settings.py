@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(o+t+9mi%f)6aob6d1vbr4rh#ls_92f70&&zqo@t(s%uuqdf&!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
 
 # Application definition
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'product_service_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'service/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'product_service_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'test',
+        'PASSWORD': '1234',
+        'HOST': 'psql_db',
+        'PORT': 5432,
     }
 }
 
