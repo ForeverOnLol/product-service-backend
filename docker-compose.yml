@@ -1,0 +1,23 @@
+services:
+  psql_db:
+    image: postgres:15
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_HOSTNAME=psql_db
+    ports:
+      - 5432:5432
+  web:
+    build: .
+    command: bash -c "pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./service:/service
+      - ./requirements.txt:/service/requirements.txt
+    ports:
+      - 8000:8000
+    depends_on:
+      - psql_db
+volumes:
+  postgres_data:
