@@ -1,0 +1,26 @@
+services:
+  psql_db:
+    image: postgres:15
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=fol
+      - POSTGRES_PASSWORD=exa2
+      - POSTGRES_HOSTNAME=psql_db
+    ports:
+      - 5432:5432
+  web:
+    build: .
+    command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/dd_test
+    ports:
+      - 8000:8000
+    depends_on:
+      - psql_db
+volumes:
+  postgres_data:
