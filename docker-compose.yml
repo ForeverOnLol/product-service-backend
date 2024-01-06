@@ -1,22 +1,30 @@
 services:
   psql_db:
     image: postgres:15
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data/
+    #    volumes:
+    #      - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=1234
-      - POSTGRES_HOSTNAME=psql_db
+      - POSTGRES_DB=postgres
     ports:
       - 5432:5432
-  web:
+  knife_market_products:
     build: .
-    command: bash -c "pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py fill_examples && python manage.py createsuperuser --noinput && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./service:/service
       - ./requirements.txt:/service/requirements.txt
     ports:
       - 8000:8000
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_HOST=psql_db
+      - POSTGRES_DB=postgres
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+      - DJANGO_SUPERUSER_PASSWORD=1234
     depends_on:
       - psql_db
 volumes:
