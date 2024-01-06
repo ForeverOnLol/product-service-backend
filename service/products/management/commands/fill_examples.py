@@ -73,13 +73,13 @@ class Command(BaseCommand):
 
             product_1 = Product(title='Кашерный нож для кэшерных рибят', comments_counter=0,
                                 description='Рандомное описание', price=100, slug='cacherniy-knife',
-                                photo=default_photo_file)
+                                photo=default_photo_file, is_new=True)
             product_1.save()
             product_1.catalog.set([catalog_second_lvl_1])
 
             product_2 = Product(title='Зик нож для зэк', description='Рандомное описание зика', slug='zikzik1',
                                 price=200, comments_counter=0,
-                                photo=default_photo_file)
+                                photo=default_photo_file, is_new=True, is_bestseller=True)
             product_2.save()
             product_2.catalog.set([catalog_second_lvl_2])
 

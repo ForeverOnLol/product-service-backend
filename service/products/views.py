@@ -1,4 +1,5 @@
 from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Catalog, Product
@@ -7,7 +8,31 @@ from .serializers import CatalogsInfoSerializer, CatalogDataSerializer, ProductC
 
 class MainPageDataApiView(APIView):
     def get(self, request):
-        return
+        # Получаем информацию о каталогах
+        catalogs_info = CatalogsInfoAPIView().get_queryset()
+        catalogs_info_data = CatalogsInfoAPIView.serializer_class(catalogs_info, many=True).data
+
+        # Получаем новые товары
+        new_products = NewProductListView().get_queryset()
+        new_products_data = ProductCardSerializer(new_products, many=True).data
+
+        # Получаем лидеров продаж
+        best_sellers = BestSellerListView().get_queryset()
+        best_sellers_data = ProductCardSerializer(best_sellers, many=True).data
+
+        # Получаем товары со скидками
+        discounted_products = DiscountedProductListView().get_queryset()
+        discounted_products_data = ProductCardSerializer(discounted_products, many=True).data
+
+        # Формируем JSON-ответ
+        response_data = {
+            'catalogs': catalogs_info_data,
+            'new_products': new_products_data,
+            'bestseller_products': best_sellers_data,
+            'discount_products': discounted_products_data,
+        }
+
+        return Response(response_data)
 
 
 class CatalogsInfoAPIView(ListAPIView):
